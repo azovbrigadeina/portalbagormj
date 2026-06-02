@@ -455,7 +455,12 @@ function launchApp(app) {
     return;
   }
 
-  if (app.launchMode === 'iframe') {
+  // Detect mobile devices (phones and tablets)
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  // Google Apps Script inside iframe is heavily blocked by Chrome Android / Safari iOS third-party cookie security.
+  // We automatically fallback to direct tab launch on mobile to ensure fast and reliable loading.
+  if (app.launchMode === 'iframe' && !isMobileDevice) {
     openViewer(app);
   } else {
     window.open(app.url, '_blank', 'noopener,noreferrer');
