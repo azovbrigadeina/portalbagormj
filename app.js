@@ -492,6 +492,17 @@ function loadIframe(url) {
   iframeFallback.style.display = 'none';
   viewerIframe.style.display = 'block';
   
+  // Crop Google Apps Script warning header visually (top 37px)
+  const isGoogleScript = url.includes('script.google.com');
+  const viewerContent = document.querySelector('.viewer-content');
+  if (viewerContent) {
+    if (isGoogleScript) {
+      viewerContent.classList.add('hide-google-banner');
+    } else {
+      viewerContent.classList.remove('hide-google-banner');
+    }
+  }
+  
   viewerIframe.src = url;
 
   if (iframeTimeoutId) {

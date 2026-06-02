@@ -851,14 +851,25 @@ body {
   width: 100%;
   height: calc(100% - 64px);
   background: #0f172a;
+  overflow: hidden;
 }
 
 .viewer-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border: none;
   display: block;
   background: #ffffff;
+  transition: top 0.15s ease, height 0.15s ease;
+}
+
+/* Visual crop mask to hide Google Apps Script top warning banner */
+.viewer-content.hide-google-banner .viewer-iframe {
+  top: -37px;
+  height: calc(100% + 37px);
 }
 
 /* Iframe Loading Spinner */
