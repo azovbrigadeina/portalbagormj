@@ -187,28 +187,44 @@ function loadData() {
 
 // Fetch and increment visitor counter using public CounterAPI
 function fetchVisitorCount() {
-  const countValElem = document.getElementById('visitorCountVal');
-  if (!countValElem) return;
+  const countTodayElem = document.getElementById('countToday');
+  const countMonthElem = document.getElementById('countMonth');
+  const countTotalElem = document.getElementById('countTotal');
   
-  // Namespace and name for the portal counter
+  if (!countTotalElem) return;
+  
+  // Namespace for the portal counter
   const namespace = 'portalbagor';
-  const name = 'dashboard';
   
-  // The 'up' endpoint increments and returns the new count
-  fetch(`https://api.counterapi.dev/v1/${namespace}/${name}/up`)
-    .then(response => response.json())
-    .then(data => {
-      if (data && data.count) {
-        // Format number with dots (e.g. 1.234)
-        countValElem.textContent = new Intl.NumberFormat('id-ID').format(data.count);
-      } else {
-        countValElem.textContent = '...';
-      }
-    })
-    .catch(err => {
-      console.warn('Gagal memuat counter pengunjung:', err);
-      countValElem.textContent = '-';
-    });
+  // Format dates for the keys
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  
+  const keyToday = `dash_${year}${month}${day}`;
+  const keyMonth = `dash_${year}${month}`;
+  const keyTotal = `dashboard_total`;
+  
+  const formatNum = (num) => new Intl.NumberFormat('id-ID').format(num);
+
+  // Fetch all three concurrently
+  Promise.all([
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${keyToday}/up`).then(res => res.json()),
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${keyMonth}/up`).then(res => res.json()),
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${keyTotal}/up`).then(res => res.json())
+  ])
+  .then(([dataToday, dataMonth, dataTotal]) => {
+    if (countTodayElem) countTodayElem.textContent = dataToday && dataToday.count ? formatNum(dataToday.count) : '-';
+    if (countMonthElem) countMonthElem.textContent = dataMonth && dataMonth.count ? formatNum(dataMonth.count) : '-';
+    if (countTotalElem) countTotalElem.textContent = dataTotal && dataTotal.count ? formatNum(dataTotal.count) : '-';
+  })
+  .catch(err => {
+    console.warn('Gagal memuat counter pengunjung:', err);
+    if (countTodayElem) countTodayElem.textContent = '-';
+    if (countMonthElem) countMonthElem.textContent = '-';
+    if (countTotalElem) countTotalElem.textContent = '-';
+  });
 }
 
 // Fetch from Google Visualization endpoint

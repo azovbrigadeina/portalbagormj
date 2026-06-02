@@ -75,14 +75,19 @@
     <footer class="dashboard-footer">
       <div class="footer-content">
         <p>&copy; 2026 Bagian Organisasi Sekretariat Daerah Kabupaten Muaro Jambi. All rights reserved.</p>
-        <div class="visitor-counter" id="visitorCounter" title="Total Pengunjung Portal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          <span id="visitorCountText">Pengunjung: <span class="count-value" id="visitorCountVal">...</span></span>
+        <div class="visitor-stats-container">
+          <div class="stat-badge" title="Pengunjung Hari Ini">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Hari Ini: <strong id="countToday" class="count-value">...</strong></span>
+          </div>
+          <div class="stat-badge" title="Pengunjung Bulan Ini">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            <span>Bulan Ini: <strong id="countMonth" class="count-value">...</strong></span>
+          </div>
+          <div class="stat-badge stat-total" title="Total Pengunjung Keseluruhan">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Total: <strong id="countTotal" class="count-value">...</strong></span>
+          </div>
         </div>
       </div>
     </footer>
