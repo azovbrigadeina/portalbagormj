@@ -144,8 +144,7 @@ const defaultApps = [
 // Active Application Database state
 let appsData = [];
 
-// LocalStorage Keys
-const SHEET_ID_KEY = 'portal_spreadsheet_id';
+// Configuration
 const DEFAULT_SHEET_ID = '1Ag28OK0xukrtqyhXlda39xT2KYiNE4qC9FOIV1HnDow';
 
 // DOM Elements
@@ -166,12 +165,7 @@ const refreshViewerBtn = document.getElementById('refreshViewerBtn');
 const externalViewerLink = document.getElementById('externalViewerLink');
 const closeViewerBtn = document.getElementById('closeViewerBtn');
 
-const settingsToggleBtn = document.getElementById('settingsToggleBtn');
-const settingsModal = document.getElementById('settingsModal');
-const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-const sheetIdInput = document.getElementById('sheetIdInput');
-const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-const resetSettingsBtn = document.getElementById('resetSettingsBtn');
+
 
 // State Variables
 let currentCategory = 'all';
@@ -187,10 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Primary data fetch/load orchestration
 function loadData() {
-  const savedSheetId = localStorage.getItem(SHEET_ID_KEY);
-  const activeSheetId = (savedSheetId && savedSheetId.trim() !== '') ? savedSheetId.trim() : DEFAULT_SHEET_ID;
-  
-  fetchFromGoogleSheets(activeSheetId);
+  fetchFromGoogleSheets(DEFAULT_SHEET_ID);
 }
 
 // Fetch from Google Visualization endpoint
@@ -334,42 +325,10 @@ function setupEventListeners() {
       if (viewerOverlay.style.display === 'flex') {
         closeViewer();
       }
-      if (settingsModal.style.display === 'flex') {
-        closeSettings();
-      }
     }
   });
 
-  // Settings Modal Controls
-  settingsToggleBtn.addEventListener('click', openSettings);
-  closeSettingsBtn.addEventListener('click', closeSettings);
-  
-  // Close settings clicking outside card
-  settingsModal.addEventListener('click', (e) => {
-    if (e.target === settingsModal) {
-      closeSettings();
-    }
-  });
 
-  // Save Settings Clicked
-  saveSettingsBtn.addEventListener('click', () => {
-    const val = sheetIdInput.value.trim();
-    if (val !== '') {
-      localStorage.setItem(SHEET_ID_KEY, val);
-    } else {
-      localStorage.removeItem(SHEET_ID_KEY);
-    }
-    closeSettings();
-    loadData();
-  });
-
-  // Reset settings to defaults
-  resetSettingsBtn.addEventListener('click', () => {
-    sheetIdInput.value = '';
-    localStorage.removeItem(SHEET_ID_KEY);
-    closeSettings();
-    loadData();
-  });
 }
 
 // Render dynamic elements
@@ -539,17 +498,4 @@ function closeViewer() {
   }
 }
 
-// Settings Panel state management
-function openSettings() {
-  const savedSheetId = localStorage.getItem(SHEET_ID_KEY) || '';
-  sheetIdInput.value = savedSheetId;
-  settingsModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
 
-function closeSettings() {
-  settingsModal.style.display = 'none';
-  if (viewerOverlay.style.display !== 'flex') {
-    document.body.style.overflow = 'auto';
-  }
-}

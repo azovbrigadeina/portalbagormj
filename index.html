@@ -35,13 +35,7 @@
         </div>
       </div>
       
-      <!-- Settings Toggle Button in Header -->
-      <button id="settingsToggleBtn" class="settings-toggle-btn" title="Pengaturan Database Links" aria-label="Pengaturan">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-      </button>
+
     </header>
 
     <!-- Search & Filter Controls -->
@@ -83,52 +77,7 @@
     </footer>
   </main>
 
-  <!-- Database Settings Modal -->
-  <div class="settings-modal" id="settingsModal" style="display: none;">
-    <div class="settings-card">
-      <div class="settings-header">
-        <h3>Pengaturan Database Portal</h3>
-        <button id="closeSettingsBtn" class="close-settings-btn" aria-label="Tutup Pengaturan">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="settings-body">
-        <p class="settings-desc">Anda bisa menyinkronkan portal ini dengan Google Spreadsheet milik Anda untuk mengelola menu link secara dinamis tanpa mengubah kode.</p>
-        
-        <div class="form-group">
-          <label for="sheetIdInput">Google Spreadsheet ID</label>
-          <input type="text" id="sheetIdInput" placeholder="Masukkan Spreadsheet ID (kosongkan untuk default)...">
-          <small>ID terletak di URL Google Sheet Anda: <code>https://docs.google.com/spreadsheets/d/<b>[SPREADSHEET_ID]</b>/edit</code></small>
-        </div>
 
-        <div class="settings-help">
-          <h4>Cara Penyiapan Google Sheets:</h4>
-          <ol>
-            <li>Salin template Google Sheet resmi untuk aplikasi portal ini.</li>
-            <li>Klik tombol bagikan (**Share**) di Google Sheet Anda, set akses menjadi <strong>"Anyone with the link can view"</strong> (Siapa saja yang memiliki link dapat melihat).</li>
-            <li>Salin ID Spreadsheet dari URL-nya dan tempel di atas.</li>
-            <li>Klik tombol **Simpan & Sinkronkan**.</li>
-          </ol>
-          <a href="https://docs.google.com/spreadsheets/d/1X5031bY2bT46U_cM9aI-V6N0_rQ1t86Y4pB4iH6mBwQ/copy" target="_blank" class="template-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-            </svg>
-            <span>Salin Template Google Sheets</span>
-          </a>
-        </div>
-      </div>
-      <div class="settings-footer">
-        <button id="resetSettingsBtn" class="btn-secondary">Reset ke Default</button>
-        <button id="saveSettingsBtn" class="btn-primary">Simpan & Sinkronkan</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Fullscreen Iframe Viewer -->
   <div class="viewer-overlay" id="viewerOverlay" style="display: none;">
