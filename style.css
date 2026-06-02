@@ -748,13 +748,13 @@ body {
   }
 }
 
-/* Floating Immersive Navbar */
+/* Floating Immersive Navbar & Auto-Hide Hover Zone */
 .viewer-header {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px; /* Hover detection area at the top of the screen */
   background: transparent;
   border-bottom: none;
   backdrop-filter: none;
@@ -762,16 +762,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0;
+  padding: 0 24px;
   z-index: 100;
   pointer-events: none; /* Allows click-through to iframe */
-  opacity: 0.35;
-  transition: opacity 0.25s ease;
 }
 
-/* Glow to full opacity when user hovers near top menu */
-.viewer-header:hover {
+/* Hide control panels by default (completely clean 0% opacity) */
+.viewer-left,
+.viewer-actions {
+  opacity: 0;
+  transform: translateY(-15px); /* Smooth slide-in effect */
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto; /* Restores click functionality when visible */
+}
+
+/* Smoothly slide in and show controls when hovering over the top 80px area */
+.viewer-header:hover .viewer-left,
+.viewer-header:hover .viewer-actions {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .viewer-left {
@@ -779,7 +788,6 @@ body {
   align-items: center;
   gap: 12px;
   max-width: 60%;
-  pointer-events: auto; /* Restores click functionality */
 }
 
 .viewer-btn {
