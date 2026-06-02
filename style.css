@@ -730,7 +730,7 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--overlay-bg);
+  background-color: #050816;
   z-index: 9999;
   display: flex;
   flex-direction: column;
@@ -748,65 +748,89 @@ body {
   }
 }
 
-/* Viewer Navbar */
+/* Floating Immersive Navbar */
 .viewer-header {
-  height: 64px;
-  background: var(--header-bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: auto;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  z-index: 10;
+  padding: 0;
+  z-index: 100;
+  pointer-events: none; /* Allows click-through to iframe */
+  opacity: 0.35;
+  transition: opacity 0.25s ease;
+}
+
+/* Glow to full opacity when user hovers near top menu */
+.viewer-header:hover {
+  opacity: 1;
 }
 
 .viewer-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   max-width: 60%;
+  pointer-events: auto; /* Restores click functionality */
 }
 
 .viewer-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--card-border);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  border-radius: 30px;
   font-size: 13px;
-  font-weight: 550;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   text-decoration: none;
   transition: var(--transition-fast);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 .viewer-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--text-secondary);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 36px 0 rgba(0, 0, 0, 0.45);
 }
 
 .viewer-btn-icon {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--card-border);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-fast);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
 }
 
 .viewer-btn-icon:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
   color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .viewer-btn svg, .viewer-btn-icon svg {
@@ -820,10 +844,17 @@ body {
   gap: 10px;
   white-space: nowrap;
   overflow: hidden;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 18px;
+  border-radius: 30px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 .viewer-app-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   text-overflow: ellipsis;
@@ -831,7 +862,7 @@ body {
 }
 
 .viewer-app-badge {
-  font-size: 10px;
+  font-size: 9px;
   padding: 2px 8px;
   border-radius: 10px;
   font-weight: 600;
@@ -842,16 +873,19 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  pointer-events: auto;
 }
 
-/* Viewer Frame Container */
+/* Immersive 100% Height Viewer Frame Container */
 .viewer-content {
-  flex: 1;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: calc(100% - 64px);
+  height: 100%;
   background: #0f172a;
   overflow: hidden;
+  z-index: 1;
 }
 
 .viewer-iframe {
