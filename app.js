@@ -177,11 +177,38 @@ let activeAppUrl = '';
 document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   loadData();
+  fetchVisitorCount();
 });
 
 // Primary data fetch/load orchestration
 function loadData() {
   fetchFromGoogleSheets(DEFAULT_SHEET_ID);
+}
+
+// Fetch and increment visitor counter using public CounterAPI
+function fetchVisitorCount() {
+  const countValElem = document.getElementById('visitorCountVal');
+  if (!countValElem) return;
+  
+  // Namespace and name for the portal counter
+  const namespace = 'portalbagor';
+  const name = 'dashboard';
+  
+  // The 'up' endpoint increments and returns the new count
+  fetch(`https://api.counterapi.dev/v1/${namespace}/${name}/up`)
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.count) {
+        // Format number with dots (e.g. 1.234)
+        countValElem.textContent = new Intl.NumberFormat('id-ID').format(data.count);
+      } else {
+        countValElem.textContent = '...';
+      }
+    })
+    .catch(err => {
+      console.warn('Gagal memuat counter pengunjung:', err);
+      countValElem.textContent = '-';
+    });
 }
 
 // Fetch from Google Visualization endpoint
