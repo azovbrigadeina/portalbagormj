@@ -162,6 +162,7 @@ const iframeLoader = document.getElementById('iframeLoader');
 const iframeFallback = document.getElementById('iframeFallback');
 const fallbackExternalLink = document.getElementById('fallbackExternalLink');
 const refreshViewerBtn = document.getElementById('refreshViewerBtn');
+const toggleCropBtn = document.getElementById('toggleCropBtn');
 const externalViewerLink = document.getElementById('externalViewerLink');
 const closeViewerBtn = document.getElementById('closeViewerBtn');
 
@@ -360,6 +361,24 @@ function setupEventListeners() {
     }
   });
 
+  if (toggleCropBtn) {
+    toggleCropBtn.addEventListener('click', () => {
+      const viewerContent = document.querySelector('.viewer-content');
+      if (viewerContent) {
+        const isCurrentlyCropped = viewerContent.classList.contains('hide-google-banner');
+        if (isCurrentlyCropped) {
+          viewerContent.classList.remove('hide-google-banner');
+          localStorage.setItem('disableGoogleBannerCrop', 'true');
+          updateCropButtonState(false);
+        } else {
+          viewerContent.classList.add('hide-google-banner');
+          localStorage.setItem('disableGoogleBannerCrop', 'false');
+          updateCropButtonState(true);
+        }
+      }
+    });
+  }
+
   closeViewerBtn.addEventListener('click', closeViewer);
 
   // Close viewer with Escape key
@@ -503,11 +522,18 @@ function loadIframe(url) {
   const isGoogleScript = url.includes('script.google.com');
   const viewerContent = document.querySelector('.viewer-content');
   if (viewerContent) {
-    if (isGoogleScript) {
+    const disableCrop = localStorage.getItem('disableGoogleBannerCrop') === 'true';
+    if (isGoogleScript && !disableCrop) {
       viewerContent.classList.add('hide-google-banner');
     } else {
       viewerContent.classList.remove('hide-google-banner');
     }
+  }
+  
+  if (toggleCropBtn) {
+    toggleCropBtn.style.display = isGoogleScript ? 'flex' : 'none';
+    const isCropped = viewerContent && viewerContent.classList.contains('hide-google-banner');
+    updateCropButtonState(isCropped);
   }
   
   viewerIframe.src = url;
@@ -538,6 +564,17 @@ function closeViewer() {
   if (iframeTimeoutId) {
     clearTimeout(iframeTimeoutId);
     iframeTimeoutId = null;
+  }
+}
+
+function updateCropButtonState(isCropped) {
+  if (!toggleCropBtn) return;
+  if (isCropped) {
+    toggleCropBtn.classList.add('active');
+    toggleCropBtn.title = "Tampilkan Banner Google (Gunakan jika bagian atas header terpotong)";
+  } else {
+    toggleCropBtn.classList.remove('active');
+    toggleCropBtn.title = "Potong Tampilan Atas (Sembunyikan Banner Peringatan Google)";
   }
 }
 
