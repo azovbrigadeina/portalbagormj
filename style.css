@@ -1142,6 +1142,24 @@ body {
     font-size: 14px;
   }
   
+  /* Horizontal scrollable category tabs on mobile */
+  .filter-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 16px 12px 16px;
+    margin: 0 -16px;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .filter-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .filter-tab {
+    flex-shrink: 0;
+  }
+  
   .app-grid {
     grid-template-columns: 1fr;
   }
@@ -1151,7 +1169,14 @@ body {
   }
   
   .viewer-left {
-    max-width: 50%;
+    max-width: 60%;
+  }
+  
+  /* Force controls to always show on mobile/touch screens (since hover isn't possible) */
+  .viewer-left,
+  .viewer-actions {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
   
   .viewer-btn span {
@@ -1164,5 +1189,15 @@ body {
   
   .viewer-app-title {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Hide the app title card on very small screens to avoid overlaps */
+  .viewer-app-info {
+    display: none;
+  }
+  .viewer-left {
+    max-width: 100%;
   }
 }
