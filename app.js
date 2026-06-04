@@ -173,6 +173,7 @@ let currentCategory = 'all';
 let searchQuery = '';
 let iframeTimeoutId = null;
 let activeAppUrl = '';
+let originalTitle = document.title;
 
 // Load App Data from Storage or Fetch
 document.addEventListener('DOMContentLoaded', () => {
@@ -494,6 +495,7 @@ function openViewer(app) {
   
   viewerAppTitle.textContent = app.name;
   activeAppUrl = app.url;
+  document.title = `${app.name} - Portal Layanan Mandiri`;
   
   viewerAppBadge.textContent = app.status === 'pengembangan' ? 'Pengembangan' : (app.status === 'admin' ? 'Admin Only' : 'Stabil');
   viewerAppBadge.className = 'viewer-app-badge';
@@ -560,6 +562,7 @@ function closeViewer() {
   viewerOverlay.style.display = 'none';
   viewerIframe.src = 'about:blank';
   activeAppUrl = '';
+  document.title = originalTitle;
   
   if (iframeTimeoutId) {
     clearTimeout(iframeTimeoutId);
