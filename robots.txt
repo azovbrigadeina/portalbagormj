@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://azovbrigadeina.github.io/portalbagormj/sitemap.xml
