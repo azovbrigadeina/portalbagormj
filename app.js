@@ -416,10 +416,14 @@ function renderApps() {
   }
 
   filteredApps.forEach(app => {
-    const card = document.createElement('div');
+    const card = document.createElement('a');
     card.className = 'app-card';
-    card.setAttribute('role', 'button');
-    card.setAttribute('tabindex', '0');
+    card.href = app.url || '#';
+    card.setAttribute('data-id', app.id);
+    if (app.url && app.url !== '#' && app.url !== '') {
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+    }
     
     let badgeClass = 'badge-stable';
     let badgeText = 'Stabil';
@@ -458,11 +462,14 @@ function renderApps() {
       </div>
     `;
 
-    card.addEventListener('click', () => launchApp(app));
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+    card.addEventListener('click', (e) => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (app.url === '#' || app.url === '') {
         e.preventDefault();
-        launchApp(app);
+        alert(`Aplikasi "${app.name}" masih dalam tahap pengembangan dan belum dapat diakses.`);
+      } else if (app.launchMode === 'iframe' && !isMobileDevice) {
+        e.preventDefault();
+        openViewer(app);
       }
     });
 
@@ -470,24 +477,6 @@ function renderApps() {
   });
 }
 
-// App Launch Handler
-function launchApp(app) {
-  if (app.url === '#' || app.url === '') {
-    alert(`Aplikasi "${app.name}" masih dalam tahap pengembangan dan belum dapat diakses.`);
-    return;
-  }
-
-  // Detect mobile devices (phones and tablets)
-  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-  // Google Apps Script inside iframe is heavily blocked by Chrome Android / Safari iOS third-party cookie security.
-  // We automatically fallback to direct tab launch on mobile to ensure fast and reliable loading.
-  if (app.launchMode === 'iframe' && !isMobileDevice) {
-    openViewer(app);
-  } else {
-    window.open(app.url, '_blank', 'noopener,noreferrer');
-  }
-}
 
 // Fullscreen Viewer state management
 function openViewer(app) {

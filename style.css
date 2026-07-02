@@ -325,6 +325,7 @@ body {
 
 /* App Card styling */
 .app-card {
+  text-decoration: none;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-md);
