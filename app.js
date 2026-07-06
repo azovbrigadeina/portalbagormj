@@ -310,7 +310,7 @@ function setConnectionStatus(type, label) {
     connectionStatus.classList.add('status-loading');
   } else if (type === 'active') {
     connectionStatus.classList.add('status-active');
-    connectionStatus.textContent = `Sheets: Terhubung`;
+    connectionStatus.textContent = `ALL SYSTEMS ONLINE`;
   } else {
     connectionStatus.classList.add('status-offline');
     connectionStatus.textContent = `Database: ${label}`;
