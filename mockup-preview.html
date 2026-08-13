@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup Redesain Warna Portal - Royal Indigo & Gold Variations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Base & Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* VARIANT 1: Sovereign Neon (Gradient Borders & Neon Glow) */
+    body.variant-1 {
+      --bg-primary: #040817;
+      --bg-card: rgba(8, 16, 38, 0.85);
+      --border-card: rgba(255, 199, 0, 0.35);
+      --border-hover: #FFC700;
+      --text-primary: #ffffff;
+      --text-secondary: #a0aec0;
+      --accent-blue: #0057B7;
+      --accent-gold: #FFC700;
+      --grad-title: linear-gradient(135deg, #ffffff 0%, #60A5FA 40%, #FFC700 100%);
+      --grad-primary-btn: linear-gradient(135deg, #0057B7 0%, #003B7A 50%, #FFC700 100%);
+      --card-shadow: 0 8px 32px rgba(0, 87, 183, 0.2), inset 0 0 15px rgba(255, 199, 0, 0.05);
+      --btn-text-color: #ffffff;
+      --hero-bg: linear-gradient(135deg, rgba(0, 87, 183, 0.3) 0%, rgba(255, 199, 0, 0.15) 100%);
+      --badge-bg: rgba(255, 199, 0, 0.15);
+      --badge-color: #FFC700;
+      --badge-border: rgba(255, 199, 0, 0.5);
+    }
+
+    /* VARIANT 2: Executive Dual-Tone (Wibawa Resmi & Bold Gold Typography) */
+    body.variant-2 {
+      --bg-primary: #060b1e;
+      --bg-card: rgba(11, 20, 44, 0.9);
+      --border-card: rgba(0, 87, 183, 0.4);
+      --border-hover: #0057B7;
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --accent-blue: #00449E;
+      --accent-gold: #FFD700;
+      --grad-title: linear-gradient(90deg, #FFD700 0%, #FFF099 50%, #60A5FA 100%);
+      --grad-primary-btn: linear-gradient(90deg, #00449E 0%, #0057B7 60%, #FFD700 100%);
+      --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      --btn-text-color: #ffffff;
+      --hero-bg: linear-gradient(90deg, rgba(0, 68, 158, 0.4) 0%, rgba(255, 215, 0, 0.2) 100%);
+      --badge-bg: rgba(0, 87, 183, 0.25);
+      --badge-color: #93c5fd;
+      --badge-border: rgba(0, 87, 183, 0.6);
+    }
+
+    /* VARIANT 3: Ultra-Contrast Gold Button & Deep Cobalt (Tegas & Kontras Ekstrem) */
+    body.variant-3 {
+      --bg-primary: #030612;
+      --bg-card: rgba(7, 14, 32, 0.95);
+      --border-card: rgba(255, 184, 0, 0.25);
+      --border-hover: #FFB800;
+      --text-primary: #ffffff;
+      --text-secondary: #94a3b8;
+      --accent-blue: #0057B7;
+      --accent-gold: #FFB800;
+      --grad-title: linear-gradient(135deg, #93C5FD 0%, #ffffff 50%, #FFB800 100%);
+      --grad-primary-btn: linear-gradient(135deg, #FFB800 0%, #FFA000 100%);
+      --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+      --btn-text-color: #040817; /* High Contrast Dark Text on Gold Button */
+      --hero-bg: radial-gradient(circle at 0% 0%, rgba(0, 87, 183, 0.4) 0%, rgba(255, 184, 0, 0.15) 100%);
+      --badge-bg: rgba(255, 184, 0, 0.2);
+      --badge-color: #FFB800;
+      --badge-border: #FFB800;
+    }
+
+    /* Ambient Background Lights */
+    .bg-ambient-blue {
+      position: fixed;
+      top: -10vw;
+      right: -10vw;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 87, 183, 0.25) 0%, transparent 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bg-ambient-gold {
+      position: fixed;
+      bottom: -10vw;
+      left: -10vw;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 199, 0, 0.18) 0%, transparent 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Control Panel for Switcher */
+    .mockup-controls {
+      max-width: 1100px;
+      margin: 0 auto 30px auto;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 199, 0, 0.25);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.6);
+    }
+
+    .controls-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(90deg, #60A5FA, #FFC700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .controls-header p {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    .theme-buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .theme-btn {
+      flex: 1;
+      min-width: 240px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 18, 38, 0.85);
+      color: #94a3b8;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .theme-btn:hover {
+      border-color: #FFC700;
+      color: #fff;
+    }
+
+    .theme-btn.active {
+      background: linear-gradient(135deg, rgba(0, 87, 183, 0.35) 0%, rgba(255, 199, 0, 0.25) 100%);
+      border-color: #FFC700;
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(255, 199, 0, 0.3);
+    }
+
+    .btn-subtitle {
+      font-size: 12px;
+      font-weight: 400;
+      color: #cbd5e1;
+    }
+
+    /* Mockup Container */
+    .portal-preview {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Header Preview */
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border-card);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-box {
+      width: 60px;
+      height: 60px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #00449E;
+      font-size: 24px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      border: 3px solid var(--accent-gold);
+    }
+
+    .header-titles h1 {
+      font-size: 28px;
+      font-weight: 800;
+      background: var(--grad-title);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .header-titles p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .status-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: var(--badge-bg);
+      color: var(--badge-color);
+      border: 1px solid var(--badge-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .status-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 12px var(--accent-gold);
+    }
+
+    /* Grid App Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 22px;
+    }
+
+    .app-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid var(--border-card);
+      border-radius: 20px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+
+    .app-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 36px rgba(255, 199, 0, 0.25);
+    }
+
+    .app-card-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 87, 183, 0.4) 0%, rgba(255, 199, 0, 0.25) 100%);
+      border: 1.5px solid var(--accent-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .card-info h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .card-info p {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--grad-primary-btn);
+      color: var(--btn-text-color);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      filter: brightness(1.15);
+      box-shadow: 0 8px 24px rgba(255, 199, 0, 0.4);
+    }
+
+    /* Banner Highlight */
+    .hero-banner {
+      background: var(--hero-bg);
+      border: 1.5px solid var(--border-card);
+      border-radius: 22px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      backdrop-filter: blur(24px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .hero-banner h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: var(--grad-title);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-banner p {
+      font-size: 14.5px;
+      color: var(--text-secondary);
+      max-width: 620px;
+      line-height: 1.5;
+    }
+
+    .hero-banner .btn-action {
+      width: auto;
+      white-space: nowrap;
+      padding: 14px 26px;
+    }
+  </style>
+</head>
+<body class="variant-1">
+  <div class="bg-ambient-blue"></div>
+  <div class="bg-ambient-gold"></div>
+
+  <!-- Switcher Control -->
+  <div class="mockup-controls">
+    <div class="controls-header">
+      <h2>Pilihan Variasi Royal Indigo & Gold yang Lebih Menegaskan</h2>
+      <p>Bandingkan 3 karakter desain di bawah untuk melihat mana yang paling tegas & berwibawa untuk portal Anda:</p>
+    </div>
+    <div class="theme-buttons">
+      <button class="theme-btn active" onclick="setVariant('variant-1', this)">
+        <span>1. Sovereign Neon Glow</span>
+        <span class="btn-subtitle">Garis tepi emas bercahaya, tombol gradasi indigo-emas futuristik & tegas</span>
+      </button>
+      <button class="theme-btn" onclick="setVariant('variant-2', this)">
+        <span>2. Executive Dual-Tone</span>
+        <span class="btn-subtitle">Wibawa resmi pemerintah, judul emas menyolok dengan banner dual-tone</span>
+      </button>
+      <button class="theme-btn" onclick="setVariant('variant-3', this)">
+        <span>3. Ultra-Contrast Gold Button</span>
+        <span class="btn-subtitle">Kontras ekstrem: Background cobalt pekat dengan tombol Full Gold bercahaya</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Live Portal Preview -->
+  <div class="portal-preview">
+    <!-- Header -->
+    <header class="preview-header">
+      <div class="header-left">
+        <div class="logo-box">MJ</div>
+        <div class="header-titles">
+          <h1>BAGIAN ORGANISASI SETDA MUARO JAMBI</h1>
+          <p>Portal Layanan Mandiri & Aplikasi Internal Pemerintah Kabupaten Muaro Jambi</p>
+        </div>
+      </div>
+      <div class="status-pill">
+        Sistem Terintegrasi Online
+      </div>
+    </header>
+
+    <!-- Hero Highlight -->
+    <div class="hero-banner">
+      <div>
+        <h2>Portal Layanan Terpadu Bagian Organisasi</h2>
+        <p>Akses cepat dan efisien ke aplikasi internal seperti SIMpel2, E-SPT Online, SiANJAB & ABK, serta Sistem Pelayanan Mandiri Aparatur.</p>
+      </div>
+      <button class="btn-action btn-primary">Jelajahi Aplikasi →</button>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid">
+      <!-- Card 1 -->
+      <div class="app-card">
+        <div>
+          <div class="app-card-top">
+            <div class="card-icon">⚡</div>
+            <div class="card-info">
+              <h3>SIMpel2</h3>
+            </div>
+          </div>
+          <p class="card-info">Sistem Informasi Manajemen Pelayanan & Kinerja Pegawai Terpadu Setda Kab. Muaro Jambi.</p>
+        </div>
+        <button class="btn-action btn-primary">Buka Aplikasi SIMpel2</button>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="app-card">
+        <div>
+          <div class="app-card-top">
+            <div class="card-icon">📑</div>
+            <div class="card-info">
+              <h3>E-SPT Online</h3>
+            </div>
+          </div>
+          <p class="card-info">Layanan pembuatan dan pengajuan Surat Perintah Tugas ASN secara digital & transparan.</p>
+        </div>
+        <button class="btn-action btn-primary">Buka E-SPT Online</button>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="app-card">
+        <div>
+          <div class="app-card-top">
+            <div class="card-icon">📊</div>
+            <div class="card-info">
+              <h3>SiANJAB & ABK</h3>
+            </div>
+          </div>
+          <p class="card-info">Analisis Jabatan dan Beban Kerja Perangkat Daerah Kabupaten Muaro Jambi.</p>
+        </div>
+        <button class="btn-action btn-primary">Buka SiANJAB & ABK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setVariant(variantName, btn) {
+      document.body.className = variantName;
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
