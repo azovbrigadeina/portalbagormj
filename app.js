@@ -176,11 +176,17 @@ let activeAppUrl = '';
 let originalTitle = document.title;
 
 // Load App Data from Storage or Fetch
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   setupEventListeners();
   loadData();
   fetchVisitorCount();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 // Primary data fetch/load orchestration
 function loadData() {
