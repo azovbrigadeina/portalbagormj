@@ -442,6 +442,23 @@ function setupEventListeners() {
 
   closeViewerBtn.addEventListener('click', closeViewer);
 
+  // Floating FAB toggle listener
+  const viewerFabTrigger = document.getElementById('viewerFabTrigger');
+  const viewerFabContainer = document.getElementById('viewerFabContainer');
+
+  if (viewerFabTrigger && viewerFabContainer) {
+    viewerFabTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      viewerFabContainer.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!viewerFabContainer.contains(e.target)) {
+        viewerFabContainer.classList.remove('open');
+      }
+    });
+  }
+
   // Close viewer with Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -573,22 +590,10 @@ function loadIframe(url) {
   iframeFallback.style.display = 'none';
   viewerIframe.style.display = 'block';
   
-  // Crop Google Apps Script warning header visually (top 37px)
-  const isGoogleScript = url.includes('script.google.com');
+  // Ensure viewer does not crop the app header
   const viewerContent = document.querySelector('.viewer-content');
   if (viewerContent) {
-    const disableCrop = localStorage.getItem('disableGoogleBannerCrop') === 'true';
-    if (isGoogleScript && !disableCrop) {
-      viewerContent.classList.add('hide-google-banner');
-    } else {
-      viewerContent.classList.remove('hide-google-banner');
-    }
-  }
-  
-  if (toggleCropBtn) {
-    toggleCropBtn.style.display = isGoogleScript ? 'flex' : 'none';
-    const isCropped = viewerContent && viewerContent.classList.contains('hide-google-banner');
-    updateCropButtonState(isCropped);
+    viewerContent.classList.remove('hide-google-banner');
   }
   
   viewerIframe.src = url;
@@ -617,6 +622,11 @@ function closeViewer() {
   activeAppUrl = '';
   document.title = originalTitle;
   
+  const viewerFabContainer = document.getElementById('viewerFabContainer');
+  if (viewerFabContainer) {
+    viewerFabContainer.classList.remove('open');
+  }
+
   if (iframeTimeoutId) {
     clearTimeout(iframeTimeoutId);
     iframeTimeoutId = null;
