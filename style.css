@@ -842,151 +842,91 @@ body {
   }
 }
 
-/* Floating Immersive Navbar & Auto-Hide Hover Zone */
-.viewer-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px; /* Hover detection area at the top of the screen */
-  background: transparent;
-  border-bottom: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+/* Floating Capsule Navigation (Bottom-Right Corner) */
+.viewer-capsule {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  z-index: 100;
-  pointer-events: none; /* Allows click-through to iframe */
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(6, 11, 30, 0.88);
+  border: 1.5px solid rgba(0, 87, 183, 0.45);
+  border-radius: 50px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 87, 183, 0.25);
+  opacity: 0.85;
+  transition: opacity var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  pointer-events: auto;
 }
 
-/* Hide control panels by default (completely clean 0% opacity) */
-.viewer-left,
-.viewer-actions {
-  opacity: 0;
-  transform: translateY(-15px); /* Smooth slide-in effect */
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: auto; /* Restores click functionality when visible */
-}
-
-/* Smoothly slide in and show controls when hovering over the top 80px area */
-.viewer-header:hover .viewer-left,
-.viewer-header:hover .viewer-actions {
+.viewer-capsule:hover {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(-2px);
+  border-color: var(--ukraine-gold);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 87, 183, 0.4);
 }
 
-.viewer-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 60%;
-}
-
-.viewer-btn {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.viewer-capsule-btn {
+  background: transparent;
+  border: none;
   color: var(--text-primary);
-  padding: 10px 20px;
+  padding: 6px 10px;
   border-radius: 30px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-decoration: none;
   transition: var(--transition-fast);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-.viewer-btn:hover {
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 36px 0 rgba(0, 0, 0, 0.45);
+.viewer-capsule-btn:hover {
+  background: rgba(0, 87, 183, 0.25);
+  color: var(--ukraine-gold);
 }
 
-.viewer-btn-icon {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  width: 42px;
-  height: 42px;
+.viewer-capsule-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.viewer-capsule-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.18);
+  margin: 0 2px;
+}
+
+.viewer-capsule-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-fast);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  pointer-events: auto;
+  text-decoration: none;
 }
 
-.viewer-btn-icon:hover {
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: var(--primary);
-  transform: translateY(-2px);
+.viewer-capsule-icon-btn:hover {
+  background: rgba(0, 87, 183, 0.25);
+  color: var(--ukraine-gold);
+  transform: scale(1.1);
 }
 
-.viewer-btn-icon.active {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.viewer-btn-icon.active:hover {
-  background: var(--primary);
-  color: #ffffff;
-}
-
-.viewer-btn svg, .viewer-btn-icon svg {
+.viewer-capsule-icon-btn svg {
   width: 16px;
   height: 16px;
-}
-
-.viewer-app-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 18px;
-  border-radius: 30px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-}
-
-.viewer-app-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.viewer-app-badge {
-  font-size: 9px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.viewer-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  pointer-events: auto;
 }
 
 /* Immersive 100% Height Viewer Frame Container */
@@ -1210,40 +1150,22 @@ body {
     grid-template-columns: 1fr;
   }
   
-  .viewer-header {
-    padding: 0 12px;
+  .viewer-capsule {
+    bottom: 16px;
+    right: 16px;
+    padding: 5px 8px;
+    gap: 4px;
   }
   
-  .viewer-left {
-    max-width: 60%;
+  .viewer-capsule-btn span {
+    display: none; /* Hide button text on mobile, keep icon */
   }
   
-  /* Force controls to always show on mobile/touch screens (since hover isn't possible) */
-  .viewer-left,
-  .viewer-actions {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-  
-  .viewer-btn span {
-    display: none; /* Hide button text on mobile, keep icons */
-  }
-  
-  .viewer-btn {
-    padding: 8px 12px;
-  }
-  
-  .viewer-app-title {
-    font-size: 14px;
+  .viewer-capsule-btn {
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
   }
 }
 
-@media (max-width: 480px) {
-  /* Hide the app title card on very small screens to avoid overlaps */
-  .viewer-app-info {
-    display: none;
-  }
-  .viewer-left {
-    max-width: 100%;
-  }
-}

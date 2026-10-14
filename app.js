@@ -542,18 +542,22 @@ function renderApps() {
 function openViewer(app) {
   document.body.style.overflow = 'hidden';
   
-  viewerAppTitle.textContent = app.name;
+  if (viewerAppTitle) {
+    viewerAppTitle.textContent = app.name;
+  }
   activeAppUrl = app.url;
   document.title = `${app.name} - Portal Layanan Mandiri`;
   
-  viewerAppBadge.textContent = app.status === 'pengembangan' ? 'Pengembangan' : (app.status === 'admin' ? 'Admin Only' : 'Stabil');
-  viewerAppBadge.className = 'viewer-app-badge';
-  if (app.status === 'pengembangan') {
-    viewerAppBadge.classList.add('badge-dev');
-  } else if (app.status === 'admin') {
-    viewerAppBadge.classList.add('badge-admin');
-  } else {
-    viewerAppBadge.classList.add('badge-stable');
+  if (viewerAppBadge) {
+    viewerAppBadge.textContent = app.status === 'pengembangan' ? 'Pengembangan' : (app.status === 'admin' ? 'Admin Only' : 'Stabil');
+    viewerAppBadge.className = 'viewer-app-badge';
+    if (app.status === 'pengembangan') {
+      viewerAppBadge.classList.add('badge-dev');
+    } else if (app.status === 'admin') {
+      viewerAppBadge.classList.add('badge-admin');
+    } else {
+      viewerAppBadge.classList.add('badge-stable');
+    }
   }
 
   externalViewerLink.href = app.url;
