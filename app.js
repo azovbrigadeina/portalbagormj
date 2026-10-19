@@ -194,7 +194,7 @@ function loadData() {
 }
 
 // Local visitor stats fallback helper
-function getLocalVisitorStats() {
+function getLocalVisitorStats(isNewSession = false) {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -210,19 +210,24 @@ function getLocalVisitorStats() {
     stats = {};
   }
 
-  if (!stats.totalCount || typeof stats.totalCount !== 'number') stats.totalCount = 1284;
-  if (!stats.monthCount || stats.lastMonth !== monthKey) stats.monthCount = 68;
-  if (!stats.todayCount || stats.lastDate !== todayKey) stats.todayCount = 12;
+  // Preserve established historical baselines
+  if (typeof stats.totalCount !== 'number' || stats.totalCount < 1284) {
+    stats.totalCount = 1284;
+  }
+  if (stats.lastMonth !== monthKey) {
+    stats.monthCount = (stats.lastMonth ? 0 : 68);
+    stats.lastMonth = monthKey;
+  }
+  if (stats.lastDate !== todayKey) {
+    stats.todayCount = (stats.lastDate ? 0 : 12);
+    stats.lastDate = todayKey;
+  }
 
-  const hasVisitedSession = sessionStorage.getItem('portal_visited_session');
-  if (!hasVisitedSession) {
+  if (isNewSession) {
     try {
-      sessionStorage.setItem('portal_visited_session', 'true');
-      stats.todayCount = (stats.lastDate === todayKey ? stats.todayCount : 0) + 1;
-      stats.monthCount = (stats.lastMonth === monthKey ? stats.monthCount : 0) + 1;
+      stats.todayCount += 1;
+      stats.monthCount += 1;
       stats.totalCount += 1;
-      stats.lastDate = todayKey;
-      stats.lastMonth = monthKey;
       localStorage.setItem('portal_visitor_stats', JSON.stringify(stats));
     } catch (e) {
       // Ignore storage errors in restricted contexts
@@ -232,7 +237,7 @@ function getLocalVisitorStats() {
   return stats;
 }
 
-// Fetch and increment visitor counter using CounterAPI with instant local render & fetch timeout
+// Fetch and increment visitor counter using CountAPI with instant local render & live sync
 function fetchVisitorCount() {
   const countTodayElem = document.getElementById('countToday');
   const countMonthElem = document.getElementById('countMonth');
@@ -242,45 +247,73 @@ function fetchVisitorCount() {
   
   const formatNum = (num) => new Intl.NumberFormat('id-ID').format(num);
 
+  const isNewSession = !sessionStorage.getItem('portal_visited_session');
+  if (isNewSession) {
+    try {
+      sessionStorage.setItem('portal_visited_session', 'true');
+    } catch (e) {}
+  }
+
   // 1. Instantly display local visitor stats so user never sees "..." or "-"
-  const localStats = getLocalVisitorStats();
+  const localStats = getLocalVisitorStats(isNewSession);
   if (countTodayElem) countTodayElem.textContent = formatNum(localStats.todayCount);
   if (countMonthElem) countMonthElem.textContent = formatNum(localStats.monthCount);
   if (countTotalElem) countTotalElem.textContent = formatNum(localStats.totalCount);
 
-  // 2. Attempt online API fetch with 1.5s timeout abort
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 1500);
-
-  const namespace = 'portalbagor';
+  // 2. Setup online API keys
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
   
-  const keyToday = `dash_${year}${month}${day}`;
-  const keyMonth = `dash_${year}${month}`;
-  const keyTotal = `dashboard_total`;
+  const todayKey = `${year}-${month}-${day}`;
+  const monthKey = `${year}-${month}`;
 
-  const fetchWithTimeout = (url) => 
-    fetch(url, { signal: controller.signal })
-      .then(res => { if (!res.ok) throw new Error(res.status); return res.json(); });
+  const keyToday = `portalbagor_${year}_${month}_${day}`;
+  const keyMonth = `portalbagor_${year}_${month}`;
+  const keyTotal = `portalbagor_total_v1`;
+
+  // Action: hit (increment) for new sessions, get (read current count) for reloads in same session
+  const action = isNewSession ? 'hit' : 'get';
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+  const fetchEndpoint = (endpoint, key, fallbackVal) => 
+    fetch(`https://countapi.mileshilliard.com/api/v1/${endpoint}/${key}`, { signal: controller.signal })
+      .then(res => {
+        if (res.status === 404) return { value: fallbackVal };
+        if (!res.ok) throw new Error(res.status);
+        return res.json();
+      });
 
   Promise.all([
-    fetchWithTimeout(`https://api.counterapi.dev/v2/${namespace}/${keyToday}/up`),
-    fetchWithTimeout(`https://api.counterapi.dev/v2/${namespace}/${keyMonth}/up`),
-    fetchWithTimeout(`https://api.counterapi.dev/v2/${namespace}/${keyTotal}/up`)
+    fetchEndpoint(action, keyToday, localStats.todayCount),
+    fetchEndpoint(action, keyMonth, localStats.monthCount),
+    fetchEndpoint(action, keyTotal, localStats.totalCount)
   ])
   .then(([dataToday, dataMonth, dataTotal]) => {
     clearTimeout(timeoutId);
-    if (dataToday && (dataToday.count || dataToday.up)) {
-      if (countTodayElem) countTodayElem.textContent = formatNum(dataToday.count || dataToday.up);
-    }
-    if (dataMonth && (dataMonth.count || dataMonth.up)) {
-      if (countMonthElem) countMonthElem.textContent = formatNum(dataMonth.count || dataMonth.up);
-    }
-    if (dataTotal && (dataTotal.count || dataTotal.up)) {
-      if (countTotalElem) countTotalElem.textContent = formatNum(dataTotal.count || dataTotal.up);
+
+    const valToday = (dataToday && typeof dataToday.value === 'number') ? dataToday.value : localStats.todayCount;
+    const valMonth = (dataMonth && typeof dataMonth.value === 'number') ? dataMonth.value : localStats.monthCount;
+    const valTotal = (dataTotal && typeof dataTotal.value === 'number') ? dataTotal.value : localStats.totalCount;
+
+    if (countTodayElem) countTodayElem.textContent = formatNum(valToday);
+    if (countMonthElem) countMonthElem.textContent = formatNum(valMonth);
+    if (countTotalElem) countTotalElem.textContent = formatNum(valTotal);
+
+    // Sync live server counts back to localStorage for seamless offline/initial load cache
+    try {
+      localStorage.setItem('portal_visitor_stats', JSON.stringify({
+        todayCount: valToday,
+        monthCount: valMonth,
+        totalCount: valTotal,
+        lastDate: todayKey,
+        lastMonth: monthKey
+      }));
+    } catch (e) {
+      // Storage restricted
     }
   })
   .catch(() => {
