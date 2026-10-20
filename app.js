@@ -180,6 +180,27 @@ function initApp() {
   setupEventListeners();
   loadData();
   fetchVisitorCount();
+  restoreViewerFromHash();
+}
+
+// Reopen the embedded viewer if the page was refreshed while an app was open
+function restoreViewerFromHash() {
+  const match = location.hash.match(/^#app=(.+)$/);
+  if (!match) return;
+  const appId = decodeURIComponent(match[1]);
+
+  const tryOpen = (attempts = 0) => {
+    const app = appsData.find(a => a.id === appId);
+    if (app && app.launchMode === 'iframe' && app.url && app.url !== '#') {
+      openViewer(app);
+    } else if (attempts < 20) {
+      // appsData may still be loading from Google Sheets; retry shortly
+      setTimeout(() => tryOpen(attempts + 1), 250);
+    } else {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  };
+  tryOpen();
 }
 
 if (document.readyState === 'loading') {
@@ -613,6 +634,8 @@ function openViewer(app) {
   externalViewerLink.href = app.url;
   fallbackExternalLink.href = app.url;
 
+  history.replaceState(null, '', `#app=${encodeURIComponent(app.id)}`);
+
   viewerOverlay.style.display = 'flex';
   loadIframe(app.url);
 }
@@ -654,7 +677,9 @@ function closeViewer() {
   viewerIframe.src = 'about:blank';
   activeAppUrl = '';
   document.title = originalTitle;
-  
+
+  history.replaceState(null, '', location.pathname + location.search);
+
   const viewerFabContainer = document.getElementById('viewerFabContainer');
   if (viewerFabContainer) {
     viewerFabContainer.classList.remove('open');
